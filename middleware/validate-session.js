@@ -16,9 +16,7 @@ const validateSession = (req, res, next) => {
           },
         })
           .then((user) => {
-            // console.log('user -->', user);
             if (!user) throw err;
-            // console.log('req -->', req);
             req.username = user;
             return next();
           })
