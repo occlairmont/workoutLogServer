@@ -3,12 +3,10 @@ const User = require("../db").import("../models/user");
 
 const validateSession = (req, res, next) => {
   const token = req.headers.authorization;
-  console.log("token -->", token);
   if (!token) {
     return res.status(403).send({ auth: false, message: "No token provided" });
   } else {
     jwt.verify(token, process.env.JWT_SECRET, (err, decodeToken) => {
-      console.log("decodeToken -->", decodeToken);
       if (!err && decodeToken) {
         User.findOne({
           where: {
@@ -17,7 +15,7 @@ const validateSession = (req, res, next) => {
         })
           .then((user) => {
             if (!user) throw err;
-            req.username = user;
+            req.user = user;
             return next();
           })
           .catch((err) => next(err));
